@@ -6,14 +6,13 @@
 //
 
 import SwiftUI
-import DeviceGuru
 
 @available(iOS 15.0, *)
 class ScrollViewModel: NSObject, ObservableObject, UIGestureRecognizerDelegate {
     // MARK: Properties
     @Published var isEligible: Bool = false
     @Published var isRefreshing: Bool = false
-    @Published var hasDynamicIsland: Bool = false
+    
     // MARK: Offsets and Progress
     @Published var scrollOffset: CGFloat = 0
     @Published var contentOffset: CGFloat = 0
@@ -29,16 +28,8 @@ class ScrollViewModel: NSObject, ObservableObject, UIGestureRecognizerDelegate {
         return true
     }
     
-    func checkForDynamicIsland() {
-        let deviceGuru = DeviceGuruImplementation()
-        let deviceName = deviceGuru.hardwareString
-        if deviceName == "iPhone15,2" || deviceName == "iPhone15,3" {
-            self.hasDynamicIsland = true
-        }
-    }
     // MARK: Adding gesture
     func addGesture() {
-        checkForDynamicIsland()
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(onGestureChange(gesture:)))
         panGesture.delegate = self
         panGesture.name = gestureID

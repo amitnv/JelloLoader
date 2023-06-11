@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import DeviceGuru
 
 // MARK: Custom View Builder
 @available(iOS 15.0, *)
@@ -14,11 +15,12 @@ public struct CustomRefreshView<Content: View>: View {
     public var content: Content
     // MARK: Async Call Back
     public var onRefresh: ()async->()
+    var hasDynamicIsland: Bool = false
     public init(@ViewBuilder content: @escaping ()->Content,
          onRefresh: @escaping ()async->()) {
         self.content = content()
         self.onRefresh = onRefresh
-        prettyui()
+        checkForDynamicIsland()
     }
     
     public var body: some View {
@@ -54,8 +56,8 @@ public struct CustomRefreshView<Content: View>: View {
                 Capsule()
                     .fill(.black)
             }
-            .frame(width: 126, height: scrollDelegate.hasDynamicIsland ? 37 : 28)
-            .offset(y: scrollDelegate.hasDynamicIsland ? 11 : 0)
+            .frame(width: 126, height: hasDynamicIsland ? 37 : 28)
+            .offset(y: hasDynamicIsland ? 11 : 0)
             .frame(maxHeight: .infinity, alignment: .top)
             .overlay(alignment: .top, content: {
                 // MARK: For More See Shape Morphing And MetaBall Animations Video
@@ -70,7 +72,7 @@ public struct CustomRefreshView<Content: View>: View {
                                 // Dynamic Island Offset -> 11
                                 // Circle Radius -> 38/2 -> 19
                                 // Total -> 11 + 19 -> 30
-                                ctx.draw(resolvedView, at: CGPoint(x: size.width / 2, y: scrollDelegate.hasDynamicIsland ? 30 : 10))
+                                ctx.draw(resolvedView, at: CGPoint(x: size.width / 2, y: hasDynamicIsland ? 30 : 10))
                             }
                         }
                     }
@@ -87,7 +89,7 @@ public struct CustomRefreshView<Content: View>: View {
             })
             .overlay(alignment: .top, content: {
                 RefreshView()
-                    .offset(y: scrollDelegate.hasDynamicIsland ? 11 : -10)
+                    .offset(y: hasDynamicIsland ? 11 : -10)
             })
             .ignoresSafeArea()
         })
@@ -162,8 +164,12 @@ public struct CustomRefreshView<Content: View>: View {
         .opacity(scrollDelegate.progress)
         .offset(y: offset)
     }
-    func prettyui() {
-        print("Pretty UI")
+    mutating func checkForDynamicIsland() {
+        let deviceGuru = DeviceGuruImplementation()
+        let deviceName = deviceGuru.hardwareString
+        if deviceName == "iPhone15,2" || deviceName == "iPhone15,3" {
+            hasDynamicIsland = true
+        }
     }
 }
 
