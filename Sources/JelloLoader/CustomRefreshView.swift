@@ -54,7 +54,7 @@ public struct CustomRefreshView<Content: View>: View {
                 Capsule()
                     .fill(.black)
             }
-            .frame(width: 126, height: 28)
+            .frame(width: 126, height: scrollDelegate.hasDynamicIsland ? 37 : 28)
             .offset(y: scrollDelegate.hasDynamicIsland ? 11 : 0)
             .frame(maxHeight: .infinity, alignment: .top)
             .overlay(alignment: .top, content: {
