@@ -10,6 +10,7 @@ import SwiftUI
 // MARK: Custom View Builder
 @available(iOS 15.0, *)
 public struct CustomRefreshView<Content: View>: View {
+    @StateObject var scrollDelegate: ScrollViewModel = .init()
     public var content: Content
     // MARK: Async Call Back
     public var onRefresh: ()async->()
@@ -17,9 +18,10 @@ public struct CustomRefreshView<Content: View>: View {
          onRefresh: @escaping ()async->()) {
         self.content = content()
         self.onRefresh = onRefresh
+        scrollDelegate.checkForDynamicIsland()
     }
     
-    @StateObject var scrollDelegate: ScrollViewModel = .init()
+    
     
     public var body: some View {
         ScrollView(.vertical) {
@@ -70,7 +72,7 @@ public struct CustomRefreshView<Content: View>: View {
                                 // Dynamic Island Offset -> 11
                                 // Circle Radius -> 38/2 -> 19
                                 // Total -> 11 + 19 -> 30
-                                ctx.draw(resolvedView, at: CGPoint(x: size.width / 2, y: scrollDelegate.hasDynamicIsland ? 30 :10))
+                                ctx.draw(resolvedView, at: CGPoint(x: size.width / 2, y: scrollDelegate.hasDynamicIsland ? 30 : 10))
                             }
                         }
                     }

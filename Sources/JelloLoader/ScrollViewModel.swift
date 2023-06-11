@@ -28,11 +28,12 @@ class ScrollViewModel: NSObject, ObservableObject, UIGestureRecognizerDelegate {
                            shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
+    
     func checkForDynamicIsland() {
         let deviceGuru = DeviceGuruImplementation()
         let deviceName = deviceGuru.hardwareString
         if deviceName == "iPhone15,2" || deviceName == "iPhone15,3" {
-            hasDynamicIsland = true
+            self.hasDynamicIsland = true
         }
     }
     // MARK: Adding gesture
