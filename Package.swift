@@ -5,8 +5,10 @@ import PackageDescription
 
 let package = Package(
     name: "JelloLoader",
+    platforms: [
+        .iOS(.v12)
+    ],
     products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "JelloLoader",
             targets: ["JelloLoader"]),
@@ -15,8 +17,6 @@ let package = Package(
         .package(url: "https://github.com/InderKumarRathore/DeviceGuru", from: "10.0.0")
     ],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "JelloLoader",
             dependencies: ["DeviceGuru"]),

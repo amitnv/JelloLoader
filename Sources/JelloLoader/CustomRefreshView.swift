@@ -18,6 +18,7 @@ public struct CustomRefreshView<Content: View>: View {
          onRefresh: @escaping ()async->()) {
         self.content = content()
         self.onRefresh = onRefresh
+        prettyui()
     }
     
     public var body: some View {
@@ -160,6 +161,9 @@ public struct CustomRefreshView<Content: View>: View {
         .animation(.easeInOut(duration: 0.25), value: scrollDelegate.isEligible)
         .opacity(scrollDelegate.progress)
         .offset(y: offset)
+    }
+    func prettyui() {
+        print("Pretty UI")
     }
 }
 
