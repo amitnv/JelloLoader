@@ -13,7 +13,6 @@ public struct CustomRefreshView<Content: View>: View {
     public var content: Content
     // MARK: Async Call Back
     public var onRefresh: ()async->()
-    
     public init(@ViewBuilder content: @escaping ()->Content,
          onRefresh: @escaping ()async->()) {
         self.content = content()
@@ -56,7 +55,7 @@ public struct CustomRefreshView<Content: View>: View {
                     .fill(.black)
             }
             .frame(width: 126, height: 28)
-            .offset(y: 0)
+            .offset(y: scrollDelegate.hasDynamicIsland ? 11 : 0)
             .frame(maxHeight: .infinity, alignment: .top)
             .overlay(alignment: .top, content: {
                 // MARK: For More See Shape Morphing And MetaBall Animations Video
@@ -71,7 +70,7 @@ public struct CustomRefreshView<Content: View>: View {
                                 // Dynamic Island Offset -> 11
                                 // Circle Radius -> 38/2 -> 19
                                 // Total -> 11 + 19 -> 30
-                                ctx.draw(resolvedView, at: CGPoint(x: size.width / 2, y: 10))
+                                ctx.draw(resolvedView, at: CGPoint(x: size.width / 2, y: scrollDelegate.hasDynamicIsland ? 30 :10))
                             }
                         }
                     }
@@ -88,7 +87,7 @@ public struct CustomRefreshView<Content: View>: View {
             })
             .overlay(alignment: .top, content: {
                 RefreshView()
-                    .offset(y: -10)
+                    .offset(y: scrollDelegate.hasDynamicIsland ? 11 : -10)
             })
             .ignoresSafeArea()
         })
