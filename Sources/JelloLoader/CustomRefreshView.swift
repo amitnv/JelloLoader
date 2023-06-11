@@ -18,10 +18,7 @@ public struct CustomRefreshView<Content: View>: View {
          onRefresh: @escaping ()async->()) {
         self.content = content()
         self.onRefresh = onRefresh
-        scrollDelegate.checkForDynamicIsland()
     }
-    
-    
     
     public var body: some View {
         ScrollView(.vertical) {
