@@ -11,14 +11,11 @@ import SwiftUI
 @available(iOS 15.0, *)
 public struct CustomRefreshView<Content: View>: View {
     public var content: Content
-    public var showsIndicator: Bool
     // MARK: Async Call Back
     public var onRefresh: ()async->()
     
-    public init(showsIndicator: Bool = false,
-         @ViewBuilder content: @escaping ()->Content,
+    public init(@ViewBuilder content: @escaping ()->Content,
          onRefresh: @escaping ()async->()) {
-        self.showsIndicator = showsIndicator
         self.content = content()
         self.onRefresh = onRefresh
     }
@@ -26,7 +23,7 @@ public struct CustomRefreshView<Content: View>: View {
     @StateObject var scrollDelegate: ScrollViewModel = .init()
     
     public var body: some View {
-        ScrollView(.vertical, showsIndicators: showsIndicator) {
+        ScrollView(.vertical) {
             VStack(spacing: 0) {
                 // Since We Need It From the Dynamic Island
                 // Making it as Transparent 150px Height Rectangle
@@ -91,7 +88,7 @@ public struct CustomRefreshView<Content: View>: View {
             })
             .overlay(alignment: .top, content: {
                 RefreshView()
-                    .offset(y: 0)
+                    .offset(y: -10)
             })
             .ignoresSafeArea()
         })
@@ -172,7 +169,7 @@ public struct CustomRefreshView<Content: View>: View {
 struct CustomRefreshView_Previews: PreviewProvider {
     static var previews: some View {
         // MARK: For testing purpose
-        CustomRefreshView(showsIndicator: false) {
+        CustomRefreshView() {
             VStack {
                 Rectangle()
                     .fill(.red)
